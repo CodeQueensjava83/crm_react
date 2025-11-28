@@ -17,8 +17,11 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.6",
+<<<<<<< HEAD
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
+=======
+>>>>>>> feature/components-02
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
