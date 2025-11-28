@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-
-
-function Home() {
-  return (
-    <div>
-      
-    </div>
-  )
-}
-
-export default Home
-
-
-
-
-
-
-=======
 import imgHome from '../../assets/img_home.svg';
 
 function Home() {
@@ -106,4 +87,3 @@ function Home() {
 }
 
 export default Home;
->>>>>>> feature/home
