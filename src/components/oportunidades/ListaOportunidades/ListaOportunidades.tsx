@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Oportunidade } from "../../models/Oportunidade";
-import CardOportunidade from "./CardOportunidade";
-import api from "../../services/Service";
+import type { Oportunidade } from "../../../models/Oportunidades";
+import CardOportunidade from "../cardoportunidade/CardOportunidade";
+
 
 export default function ListaOportunidades() {
   const [oportunidades, setOportunidades] = useState<Oportunidade[]>([]);
