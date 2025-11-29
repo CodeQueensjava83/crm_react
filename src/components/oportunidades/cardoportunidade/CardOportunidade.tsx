@@ -1,4 +1,4 @@
-import { Oportunidade } from "../../models/Oportunidade";
+import type { Oportunidade } from "../../../models/Oportunidades";
 
 interface Props {
   oportunidade: Oportunidade;

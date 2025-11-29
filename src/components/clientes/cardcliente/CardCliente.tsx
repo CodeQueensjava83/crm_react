@@ -1,4 +1,4 @@
-import { Cliente } from "../../models/Cliente";
+import type { Cliente } from "../../../models/Cliente";
 
 interface Props {
   cliente: Cliente;
@@ -30,7 +30,7 @@ export default function CardCliente({ cliente }: Props) {
       {/* Quantidade de oportunidades */}
       <p className="text-gray-600 mt-2">
         <span className="font-semibold">Oportunidades:</span>{" "}
-        {cliente.oportunidades ? cliente.oportunidades.length : 0}
+        {cliente.oportunidades?.length ?? 0}
       </p>
     </div>
   );

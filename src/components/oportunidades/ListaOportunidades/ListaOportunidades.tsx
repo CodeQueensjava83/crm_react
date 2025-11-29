@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import { Oportunidade } from "../../models/Oportunidade";
-import CardOportunidade from "./CardOportunidade";
-import api from "../../services/Service";
+import CardOportunidade from "../cardoportunidade/CardOportunidade";
+import type { Oportunidade } from "../../../models/Oportunidades";
+import { buscar } from "../../../services/Service";
 
 export default function ListaOportunidades() {
   const [oportunidades, setOportunidades] = useState<Oportunidade[]>([]);
 
   useEffect(() => {
-    api.get("/oportunidades")
-      .then((response) => setOportunidades(response.data))
-      .catch((error) => console.error("Erro ao buscar oportunidades:", error));
+    buscar("/oportunidades", setOportunidades, {});
   }, []);
 
   return (
