@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import CardOportunidade from "../cardoportunidade/CardOportunidade";
-import type { Oportunidade } from "../../../models/Oportunidades";
 import { buscar } from "../../../services/Service";
+import type { Oportunidade } from "../../../models/Oportunidades";
+import CardOportunidade from "../cardoportunidade/CardOportunidade";
 
 export default function ListaOportunidades() {
   const [oportunidades, setOportunidades] = useState<Oportunidade[]>([]);
