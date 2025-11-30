@@ -49,7 +49,7 @@ function Navbar() {
           {/* EQUIPE — rolagem */}
           <span
             className="px-2 cursor-pointer hover:opacity-80 transition"
-            onClick={() => goToSection("equipe")}
+            onClick={() => goToSection("/equipe")}
           >
             Equipe
           </span>
@@ -57,7 +57,7 @@ function Navbar() {
           {/* PROJETO — rolagem */}
           <span
             className="px-2 cursor-pointer hover:opacity-80 transition"
-            onClick={() => goToSection("projeto")}
+            onClick={() => goToSection("/projeto")}
           >
             Projeto
           </span>
