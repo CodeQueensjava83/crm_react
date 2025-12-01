@@ -16,19 +16,12 @@ function Sobregrupo() {
 
     <main className="min-h-screen bg-blue-900 py-12 px-6 relative">
 
-      {/* 🔥 LOGO FIXO EM RELAÇÃO AO MAIN (não empurra nada) */}
-      <a
-        href="#"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute top-6 left-6 z-50"
-      >
+      {/*  LOGO FIXO EM RELAÇÃO AO MAIN (não empurra nada) */}
         <img 
-          src="https://ik.imagekit.io/codequeens/ChatGPT%20Image%2029%20de%20nov.%20de%202025,%2015_16_06.png" 
+          src="https://ik.imagekit.io/codequeens/code_queens_logo.png" 
           alt="Logo Code Queens"
           className="w-80 h-auto"
         />
-      </a>
 
       <section className="max-w-6xl mx-auto">
 
