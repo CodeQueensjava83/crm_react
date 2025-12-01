@@ -30,13 +30,15 @@ function CardCliente({ cliente, onSuccess }: CardClienteProps) {
 
   return (
     <div className="border p-4 rounded shadow flex flex-col justify-between">
+      {/* Dados do cliente */}
       <div>
-        <h3 className="text-xl font-bold">{cliente.empresa}</h3>
+        <h3 className="text-xl font-bold">{cliente.nome}</h3>
         <p>Email: {cliente.email}</p>
         <p>Telefone: {cliente.telefone}</p>
         <p>Origem: {cliente.origem}</p>
       </div>
 
+      {/* Botões de ação */}
       <div className="flex gap-2 mt-4">
         <button
           onClick={() => setShowEditModal(true)}
@@ -62,14 +64,6 @@ function CardCliente({ cliente, onSuccess }: CardClienteProps) {
               onClose={() => setShowEditModal(false)}
               onSuccess={onSuccess}
             />
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={() => setShowEditModal(false)}
-                className="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded"
-              >
-                Cancelar
-              </button>
-            </div>
           </div>
         </div>
       )}
@@ -80,7 +74,7 @@ function CardCliente({ cliente, onSuccess }: CardClienteProps) {
           <div className="bg-white p-6 rounded shadow-lg w-1/3">
             <h2 className="text-2xl mb-4">Excluir Cliente</h2>
             <p className="mb-6">
-              Tem certeza que deseja excluir o cliente <strong>{cliente.empresa}</strong>?
+              Tem certeza que deseja excluir o cliente <strong>{cliente.nome}</strong>?
             </p>
 
             <div className="flex gap-4 justify-end">
@@ -92,7 +86,8 @@ function CardCliente({ cliente, onSuccess }: CardClienteProps) {
               </button>
               <button
                 onClick={confirmarDelete}
-                className="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded flex justify-center"
+                disabled={isDeleting}
+                className="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded flex items-center justify-center min-w-[100px]"
               >
                 {isDeleting ? <ClipLoader color="#fff" size={20} /> : "Confirmar"}
               </button>

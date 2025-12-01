@@ -12,7 +12,7 @@ interface FormClienteProps {
 function FormCliente({ clienteInicial, onClose, onSuccess }: FormClienteProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [cliente, setCliente] = useState<Cliente>(
-    clienteInicial || { empresa: "", email: "", telefone: "", origem: "" }
+    clienteInicial || { nome: "", email: "", telefone: "", origem: "" }
   );
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
@@ -46,7 +46,7 @@ function FormCliente({ clienteInicial, onClose, onSuccess }: FormClienteProps) {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={salvar}>
-      {["empresa", "email", "telefone", "origem"].map((campo) => (
+      {["nome", "email", "telefone", "origem"].map((campo) => (
         <div key={campo} className="flex flex-col">
           <label htmlFor={campo}>{campo.charAt(0).toUpperCase() + campo.slice(1)}</label>
           <input

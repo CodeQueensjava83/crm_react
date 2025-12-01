@@ -8,7 +8,7 @@ import Home from "./pages/home/Home";
 import Sobregrupo from "./pages/sobregrupo/Sobregrupo";
 import Sobreprojeto from "./pages/sobreprojeto/Sobreprojeto";
 import ListaClientes from "./components/clientes/listaclientes/ListaClientes";
-import ListaOportunidades from "./components/oportunidades/ListaOportunidades/ListaOportunidades";
+import ListaOportunidades from "./components/oportunidades/listaoportunidades/ListaOportunidades";
 
 function App() {
   return (
