@@ -27,6 +27,7 @@ function ListaClientes() {
 
   return (
     <>
+      {/* Botão para abrir modal de cadastro */}
       <div className="flex justify-center my-4">
         <button
           onClick={() => setShowCreateModal(true)}
@@ -36,35 +37,27 @@ function ListaClientes() {
         </button>
       </div>
 
+      {/* Modal de cadastro */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow-lg w-1/2">
             <h2 className="text-2xl mb-4">Cadastrar Cliente</h2>
-
-            {/* Passa a callback buscarClientes para o form */}
             <FormCliente
               onClose={() => setShowCreateModal(false)}
               onSuccess={buscarClientes}
             />
-
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={() => setShowCreateModal(false)}
-                className="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded"
-              >
-                Cancelar
-              </button>
-            </div>
           </div>
         </div>
       )}
 
+      {/* Loader */}
       {isLoading && (
         <div className="flex justify-center w-full my-8">
           <SyncLoader color="#2563EB" size={32} />
         </div>
       )}
 
+      {/* Lista de clientes */}
       <div className="flex justify-center w-full my-4">
         <div className="container flex flex-col">
           {!isLoading && clientes.length === 0 && (
@@ -78,7 +71,7 @@ function ListaClientes() {
               <CardCliente
                 key={cliente.id}
                 cliente={cliente}
-                onSuccess={buscarClientes} // também passa para editar/deletar
+                onSuccess={buscarClientes}
               />
             ))}
           </div>
