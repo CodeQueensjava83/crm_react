@@ -1,33 +1,83 @@
-import { useState } from "react";
-import type { Cliente } from "../../../models/Cliente";
+import { useEffect, useState } from "react";
+import { SyncLoader } from "react-spinners";
+import { buscar } from "../../../services/Service";
 import CardCliente from "../cardcliente/CardCliente";
+import FormCliente from "../formcliente/FormCliente";
+import type { Cliente } from "../../../models/Cliente";
 
-export default function ListaClientes() {
-  const [clientes, setClientes] = useState<Cliente[]>([
-    { id: 1, nome: "Maria", email: "maria@email.com", telefone: "123", origem: "Site", oportunidades: [] },
-    { id: 2, nome: "João", email: "joao@email.com", telefone: "456", origem: "Indicação", oportunidades: [] },
-  ]);
+function ListaClientes() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const handleUpdate = (clienteAtualizado: Cliente) => {
-    setClientes(prev =>
-      prev.map(c => (c.id === clienteAtualizado.id ? clienteAtualizado : c))
-    );
-  };
+  useEffect(() => {
+    buscarClientes();
+  }, []);
 
-  const handleDelete = (cliente: Cliente) => {
-    setClientes(prev => prev.filter(c => c.id !== cliente.id));
-  };
+  async function buscarClientes() {
+    try {
+      setIsLoading(true);
+      await buscar("/clientes", setClientes, {});
+    } catch (error: any) {
+      console.error("Erro ao buscar clientes:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
-    <div className="grid gap-4">
-      {clientes.map(c => (
-        <CardCliente
-          key={c.id}
-          cliente={c}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-        />
-      ))}
-    </div>
+    <>
+      <div className="flex justify-center my-4">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="bg-green-600 hover:bg-green-800 text-white px-4 py-2 rounded"
+        >
+          Novo Cliente
+        </button>
+      </div>
+
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-1/2">
+            <h2 className="text-2xl mb-4">Cadastrar Cliente</h2>
+
+            <FormCliente onClose={() => setShowCreateModal(false)} />
+
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="flex justify-center w-full my-8">
+          <SyncLoader color="#2563EB" size={32} />
+        </div>
+      )}
+
+      <div className="flex justify-center w-full my-4">
+        <div className="container flex flex-col">
+          {!isLoading && clientes.length === 0 && (
+            <span className="text-3xl text-center my-8">
+              Nenhum Cliente foi encontrado!
+            </span>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {clientes.map((cliente) => (
+              <CardCliente key={cliente.id} cliente={cliente} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
+
+export default ListaClientes;
