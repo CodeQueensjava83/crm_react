@@ -4,4 +4,5 @@ export interface Oportunidade {
   titulo: string;
   valor: number;
   status: string;
+  clienteId: number;
 }
