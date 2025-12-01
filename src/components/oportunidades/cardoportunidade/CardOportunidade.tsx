@@ -1,44 +1,38 @@
 import { useState } from "react";
-import { ClipLoader } from "react-spinners";
-import { deletar } from "../../../services/Service";
-import type { Oportunidade } from "../../../models/Oportunidade";
+import type { Oportunidade } from "../../../models/Oportunidades";
 import FormOportunidade from "../formoportunidade/FormOportunidade";
 
-interface CardOportunidadeProps {
+interface Props {
   oportunidade: Oportunidade;
-  onSuccess?: () => void;
+  onSuccess?: (oportunidadeAtualizada: Oportunidade) => void;
+  onDelete?: (id: number) => void;
 }
 
-function CardOportunidade({ oportunidade, onSuccess }: CardOportunidadeProps) {
+export default function CardOportunidade({ oportunidade, onSuccess, onDelete }: Props) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  async function confirmarDelete() {
-    setIsDeleting(true);
-    try {
-      await deletar(`/oportunidades/${oportunidade.id}`, {});
-      alert("Oportunidade deletada com sucesso!");
-      if (onSuccess) onSuccess();
-      setShowDeleteModal(false);
-    } catch (error) {
-      alert("Erro ao deletar oportunidade.");
-    } finally {
-      setIsDeleting(false);
-    }
-  }
 
   return (
-    <div className="border p-4 rounded shadow flex flex-col justify-between">
-      <div>
-        <h3 className="text-xl font-bold">{oportunidade.descricao}</h3>
-        <p>Valor: R$ {oportunidade.valor}</p>
-        <p>Status: {oportunidade.status}</p>
-        <p>Cliente: {oportunidade.cliente}</p>
-        <p>Telefone: {oportunidade.telefone}</p>
-        <p>Origem: {oportunidade.origem}</p>
-      </div>
+    <div className="border rounded-lg shadow-md p-4 bg-white hover:shadow-lg transition flex flex-col justify-between">
+      {/* 👉 Título da oportunidade */}
+      <h2 className="text-lg font-semibold mb-2">{oportunidade.titulo}</h2>
 
+      {/* Valor */}
+      <p className="text-gray-600">
+        <span className="font-semibold">Valor:</span> R$ {oportunidade.valor}
+      </p>
+
+      {/* Status */}
+      <p className="text-gray-600">
+        <span className="font-semibold">Status:</span> {oportunidade.status}
+      </p>
+
+      {/* Cliente ID */}
+      <p className="text-gray-600">
+        <span className="font-semibold">Cliente ID:</span> {oportunidade.clienteId}
+      </p>
+
+      {/* Botões de ação */}
       <div className="flex gap-2 mt-4">
         <button
           onClick={() => setShowEditModal(true)}
@@ -74,7 +68,7 @@ function CardOportunidade({ oportunidade, onSuccess }: CardOportunidadeProps) {
           <div className="bg-white p-6 rounded shadow-lg w-1/3">
             <h2 className="text-2xl mb-4">Excluir Oportunidade</h2>
             <p className="mb-6">
-              Tem certeza que deseja excluir <strong>{oportunidade.descricao}</strong>?
+              Tem certeza que deseja excluir <strong>{oportunidade.titulo}</strong>?
             </p>
 
             <div className="flex gap-4 justify-end">
@@ -85,10 +79,13 @@ function CardOportunidade({ oportunidade, onSuccess }: CardOportunidadeProps) {
                 Cancelar
               </button>
               <button
-                onClick={confirmarDelete}
-                className="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded flex justify-center"
+                onClick={() => {
+                  if (onDelete) onDelete(oportunidade.id);
+                  setShowDeleteModal(false);
+                }}
+                className="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded"
               >
-                {isDeleting ? <ClipLoader color="#fff" size={20} /> : "Confirmar"}
+                Confirmar
               </button>
             </div>
           </div>
@@ -97,5 +94,3 @@ function CardOportunidade({ oportunidade, onSuccess }: CardOportunidadeProps) {
     </div>
   );
 }
-
-export default CardOportunidade;

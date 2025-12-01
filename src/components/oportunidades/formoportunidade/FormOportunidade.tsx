@@ -27,6 +27,7 @@ export default function FormOportunidade({ oportunidadeInicial, onClose, onSucce
 
   function salvar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // 👉 cria mock com id aleatório se for novo
     const novaOportunidade = oportunidadeInicial
       ? { ...oportunidadeInicial, ...oportunidade }
       : { ...oportunidade, id: Math.floor(Math.random() * 10000) };
