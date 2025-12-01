@@ -22,24 +22,28 @@ function FormCliente({ clienteInicial, onClose }: FormClienteProps) {
   }
 
   async function salvar(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsLoading(true);
+  e.preventDefault();
+  setIsLoading(true);
 
-    try {
-      if (clienteInicial) {
-        await atualizar(`/clientes`, cliente, setCliente, {});
-        alert("Cliente atualizado com sucesso!");
-      } else {
-        await cadastrar(`/clientes`, cliente, setCliente, {});
-        alert("Cliente cadastrado com sucesso!");
-      }
-      onClose(); // fecha modal depois de salvar
-    } catch (error) {
-      alert("Erro ao salvar cliente.");
-    } finally {
-      setIsLoading(false);
+  try {
+    if (clienteInicial) {
+      // edição → envia com id
+      await atualizar(`/clientes`, cliente, setCliente, {});
+      alert("Cliente atualizado com sucesso!");
+    } else {
+      // cadastro → envia sem id
+      const { id, ...novoCliente } = cliente;
+      await cadastrar(`/clientes`, novoCliente, setCliente, {});
+      alert("Cliente cadastrado com sucesso!");
     }
+    onClose();
+  } catch (error) {
+    alert("Erro ao salvar cliente.");
+  } finally {
+    setIsLoading(false);
   }
+}
+
 
   return (
     <form className="flex flex-col gap-4" onSubmit={salvar}>

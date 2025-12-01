@@ -41,7 +41,11 @@ function ListaClientes() {
           <div className="bg-white p-6 rounded shadow-lg w-1/2">
             <h2 className="text-2xl mb-4">Cadastrar Cliente</h2>
 
-            <FormCliente onClose={() => setShowCreateModal(false)} />
+            {/* Passa a callback buscarClientes para o form */}
+            <FormCliente
+              onClose={() => setShowCreateModal(false)}
+              onSuccess={buscarClientes}
+            />
 
             <div className="mt-4 flex justify-end">
               <button
@@ -54,9 +58,6 @@ function ListaClientes() {
           </div>
         </div>
       )}
-<<<<<<< HEAD
-    </div>
-=======
 
       {isLoading && (
         <div className="flex justify-center w-full my-8">
@@ -74,13 +75,16 @@ function ListaClientes() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {clientes.map((cliente) => (
-              <CardCliente key={cliente.id} cliente={cliente} />
+              <CardCliente
+                key={cliente.id}
+                cliente={cliente}
+                onSuccess={buscarClientes} // também passa para editar/deletar
+              />
             ))}
           </div>
         </div>
       </div>
     </>
->>>>>>> feature/implementacao-crud
   );
 }
 
