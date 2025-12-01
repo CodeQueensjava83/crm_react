@@ -1,108 +1,87 @@
-import { useState } from "react";
-import type { Cliente } from "../../../models/Cliente";
+import { useEffect, useState } from "react";
+import { SyncLoader } from "react-spinners";
+import { buscar } from "../../../services/Service";
 import CardCliente from "../cardcliente/CardCliente";
+import FormCliente from "../formcliente/FormCliente";
+import type { Cliente } from "../../../models/Cliente";
 
-export default function ListaClientes() {
-  // 👉 Inicializa com dados mockados
-  const [clientes, setClientes] = useState<Cliente[]>([
-    {
-      id: "1",
-      nome: "Maria Silva",
-      email: "maria.silva@email.com",
-      telefone: "11 99999-1111",
-      origem: "Site",
-      oportunidades: [{ id: "op1", titulo: "Website institucional" }],
-    },
-    {
-      id: "2",
-      nome: "João Souza",
-      email: "joao.souza@email.com",
-      telefone: "11 98888-2222",
-      origem: "Indicação",
-      oportunidades: [],
-    },
-    {
-      id: "3",
-      nome: "Ana Costa",
-      email: "ana.costa@email.com",
-      telefone: "11 97777-3333",
-      origem: "Evento",
-      oportunidades: [{ id: "op2", titulo: "Consultoria de marketing" }],
-    },
-  ]);
+function ListaClientes() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState<Cliente>({
-    id: "",
-    nome: "",
-    email: "",
-    telefone: "",
-    origem: "",
-    oportunidades: [],
-  });
+  useEffect(() => {
+    buscarClientes();
+  }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSave = () => {
-    const novoCliente: Cliente = {
-      ...formData,
-      id: crypto.randomUUID(), // gera id único
-      oportunidades: [],
-    };
-    setClientes(prev => [...prev, novoCliente]);
-    setIsOpen(false);
-    setFormData({ id: "", nome: "", email: "", telefone: "", origem: "", oportunidades: [] });
-  };
+  async function buscarClientes() {
+    try {
+      setIsLoading(true);
+      await buscar("/clientes", setClientes, {});
+    } catch (error: any) {
+      console.error("Erro ao buscar clientes:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
-    <div>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-      >
-        Novo Cliente
-      </button>
-
-      {/* Lista de clientes mockados + novos */}
-      <div className="grid gap-4">
-        {clientes.map(c => (
-          <CardCliente
-            key={c.id}
-            cliente={c}
-            onUpdate={clienteAtualizado =>
-              setClientes(prev =>
-                prev.map(cl => (cl.id === clienteAtualizado.id ? clienteAtualizado : cl))
-              )
-            }
-            onDelete={cliente =>
-              setClientes(prev => prev.filter(cl => cl.id !== cliente.id))
-            }
-          />
-        ))}
+    <>
+      <div className="flex justify-center my-4">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="bg-green-600 hover:bg-green-800 text-white px-4 py-2 rounded"
+        >
+          Novo Cliente
+        </button>
       </div>
 
-      {/* Modal de cadastro */}
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-            <h3 className="text-lg font-bold mb-4">Cadastrar Cliente</h3>
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-1/2">
+            <h2 className="text-2xl mb-4">Cadastrar Cliente</h2>
 
-            <div className="space-y-3">
-              <input type="text" name="nome" value={formData.nome} onChange={handleChange} className="w-full border rounded p-2" placeholder="Nome" />
-              <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full border rounded p-2" placeholder="Email" />
-              <input type="text" name="telefone" value={formData.telefone} onChange={handleChange} className="w-full border rounded p-2" placeholder="Telefone" />
-              <input type="text" name="origem" value={formData.origem} onChange={handleChange} className="w-full border rounded p-2" placeholder="Origem" />
-            </div>
+            <FormCliente onClose={() => setShowCreateModal(false)} />
 
-            <div className="flex justify-end gap-3 mt-6">
-              <button onClick={() => setIsOpen(false)} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancelar</button>
-              <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Salvar</button>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded"
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       )}
+<<<<<<< HEAD
     </div>
+=======
+
+      {isLoading && (
+        <div className="flex justify-center w-full my-8">
+          <SyncLoader color="#2563EB" size={32} />
+        </div>
+      )}
+
+      <div className="flex justify-center w-full my-4">
+        <div className="container flex flex-col">
+          {!isLoading && clientes.length === 0 && (
+            <span className="text-3xl text-center my-8">
+              Nenhum Cliente foi encontrado!
+            </span>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {clientes.map((cliente) => (
+              <CardCliente key={cliente.id} cliente={cliente} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+>>>>>>> feature/implementacao-crud
   );
 }
+
+export default ListaClientes;
